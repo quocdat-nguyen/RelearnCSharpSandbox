@@ -99,7 +99,5 @@ namespace WpfRelearnCSharp
             return ageCalc;
         }
         // Bron: https://stackoverflow.com/questions/9/how-do-i-calculate-someones-age-based-on-a-datetime-type-birthday?page=2&tab=scoredesc#tab-top
-     
-        
     }
 }
