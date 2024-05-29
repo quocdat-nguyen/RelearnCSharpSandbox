@@ -22,37 +22,32 @@ namespace WpfRelearnCSharp
     {
         string name, subject, possessive;
         int age = 0;
-        int validationError = 3;
+        
         public MainWindow()
         {
             InitializeComponent();
         }
-
+        //First validation, then display text.
         private void btnResult_Click(object sender, RoutedEventArgs e)
         {
-            if (validationError > 3)
+            int validationError = 3;
+            tbxInfo.Text = "";
+            while (validationError != 0)
             {
-                validationError = 3;
+                VerifyName(ref validationError);
+                VerifyAge(ref validationError);
+                VerifyGender(ref validationError);
+                break;
             }
-            else if (validationError != 0)
-            {
-                do
-                {
-                    VerifyName(ref validationError);
-                    VerifyAge(ref validationError);
-                    VerifyGender(ref validationError);
-                }
-                while (validationError == 0);
-            }
-            else tbxInfo.Text = $"{possessive} name is {name}. {subject} {age}";
+            if (validationError == 0) tbxInfo.Text = $"{possessive} name is {name}. {subject} {age} Year(s) old";
         }
-
+        //Validating name
         private void VerifyName(ref int error)
         {
-            if(txtName.Text == "") { tbxInfo.Text += "You have to put your name! \n"; error++; }
+            if (txtName.Text == "") { tbxInfo.Text += "You have to put your name! \n"; }
             else { name = txtName.Text; error--; }
         }
-
+        //Validating gender
         private void VerifyGender(ref int error)
         {
             string[,] pronouns = { { "He is", "His" }, { "She is", "Her" }, { "They are", "Their" } };
@@ -80,14 +75,13 @@ namespace WpfRelearnCSharp
             else 
             { 
                 tbxInfo.Text += "You have to put your gender! \n";
-                error++;
             }
         }
-
+        //Validating age
         private void VerifyAge(ref int error)
         {
             if (datBirthdate.SelectedDate.HasValue == true) { age = VerifyAgeInYears(datBirthdate.SelectedDate.Value); error--; }
-            else { tbxInfo.Text += "You have to put your age! \n"; error++; }
+            else { tbxInfo.Text += "You have to put your age! \n"; }
         }
         private int VerifyAgeInYears(DateTime bday)
         {
