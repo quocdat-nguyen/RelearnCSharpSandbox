@@ -20,26 +20,31 @@ namespace WpfRelearnCSharp
     /// </summary>
     public partial class MainWindow : Window
     {
-        string name, subject, possessive;
+        string name, subject, possessive, edu, message;
         int age = 0;
+        List<string> studyLists = new List<string> { "Art", "Technology", "Communication", "Pharmacy", "Economy", "Health" };
         
+
         public MainWindow()
         {
             InitializeComponent();
+            cmbListStudy.ItemsSource = studyLists;
         }
         //First validation, then display text.
         private void btnResult_Click(object sender, RoutedEventArgs e)
         {
-            int validationError = 3;
+            int validationError = 4;
             tbxInfo.Text = "";
             while (validationError != 0)
             {
                 VerifyName(ref validationError);
                 VerifyAge(ref validationError);
+                VerifyLeapYear(datBirthdate.SelectedDate.Value.Year);
                 VerifyGender(ref validationError);
+                VerifyStudy(ref validationError);
                 break;
             }
-            if (validationError == 0) tbxInfo.Text = $"{possessive} name is {name}. {subject} {age} Year(s) old";
+            if (validationError == 0) tbxInfo.Text = $"{possessive} name is {name}. {subject} {age} Year(s) old. {possessive} education is {edu}, {message}.";
         }
         //Validating name
         private void VerifyName(ref int error)
@@ -80,7 +85,10 @@ namespace WpfRelearnCSharp
         //Validating age
         private void VerifyAge(ref int error)
         {
-            if (datBirthdate.SelectedDate.HasValue == true) { age = VerifyAgeInYears(datBirthdate.SelectedDate.Value); error--; }
+            if (datBirthdate.SelectedDate.HasValue == true) { 
+                age = VerifyAgeInYears(datBirthdate.SelectedDate.Value);
+                error--; 
+            }
             else { tbxInfo.Text += "You have to put your age! \n"; }
         }
         private int VerifyAgeInYears(DateTime bday)
@@ -92,6 +100,38 @@ namespace WpfRelearnCSharp
             if (bday.AddYears(ageCalc) > now) ageCalc--;
             return ageCalc;
         }
+        //VerifyStudy
+        private void VerifyStudy(ref int error)
+        {
+            switch (cmbListStudy.SelectedIndex)
+            {
+                case 0: 
+                    edu = cmbListStudy.SelectedItem.ToString(); error--; break;
+                case 1:
+                    edu = cmbListStudy.SelectedItem.ToString(); error--; break;
+                case 2:
+                    edu = cmbListStudy.SelectedItem.ToString(); error--; break;
+                case 3:
+                    edu = cmbListStudy.SelectedItem.ToString(); error--; break;
+                case 4:
+                    edu = cmbListStudy.SelectedItem.ToString(); error--; break;
+                case 5:
+                    edu = cmbListStudy.SelectedItem.ToString(); error--; break;
+                default: tbxInfo.Text += "Select education! \n";
+                    break;
+            }
+        }
+
+        private void VerifyLeapYear(int leapYear)
+        {
+            
+            if ((leapYear % 4 == 0 && leapYear % 100 != 0) || leapYear % 400 == 0)
+            {
+                message += "It is leapyear";
+            }
+            else message += "It isn't leapyear";
+        }
         // Bron: https://stackoverflow.com/questions/9/how-do-i-calculate-someones-age-based-on-a-datetime-type-birthday?page=2&tab=scoredesc#tab-top
+        //       https://www.sanfoundry.com/csharp-program-check-leap-year/
     }
 }
